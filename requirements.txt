@@ -1,0 +1,33 @@
+# Backend
+fastapi
+uvicorn[standard]
+
+# Frontend
+streamlit
+jinja2
+aiofiles
+
+# Agents & AI
+langchain
+langgraph
+groq
+
+# File Handling
+pandas
+python-docx
+pdfplumber
+
+# Utilities
+requests
+python-multipart
+
+python-dotenv
+langchain-groq
+langchain-core
+google-auth
+google-auth-oauthlib
+google-api-python-client
+pydantic
+
+speechrecognition
+pydub

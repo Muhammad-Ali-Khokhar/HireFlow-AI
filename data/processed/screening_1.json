@@ -1,0 +1,191 @@
+[
+  {
+    "filename": "CV (Muhammad Ali Khokhar).pdf",
+    "questions": [
+      {
+        "question": "Can you explain the difference between monolithic architecture and microservices architecture in backend development, and how you would implement the latter using FastAPI?",
+        "expected_answer": "The candidate should describe the key differences between monolithic and microservices architectures, and provide an example of how they would design and implement a microservices-based system using FastAPI, including service discovery, communication, and fault tolerance."
+      },
+      {
+        "question": "How do you optimize database queries in PostgreSQL to improve performance, and what indexing strategies would you use?",
+        "expected_answer": "The candidate should discuss various techniques for optimizing PostgreSQL queries, such as using efficient query methods, indexing, and caching, and provide examples of how they would apply these strategies to improve performance in a real-world scenario."
+      },
+      {
+        "question": "Describe your experience with Docker and containerized deployments. How do you ensure that your containers are secure and scalable?",
+        "expected_answer": "The candidate should outline their experience with Docker, including container creation, orchestration, and deployment, and discuss strategies for ensuring container security, such as using minimal base images, and scalability, such as using container orchestration tools like Kubernetes."
+      },
+      {
+        "question": "Can you walk me through your process for implementing background jobs and asynchronous processing in a Python backend application using libraries like Celery or Zato?",
+        "expected_answer": "The candidate should describe their experience with implementing background jobs and asynchronous processing, including task queues, worker nodes, and message brokers, and provide an example of how they would design and implement a system using a library like Celery or Zato."
+      },
+      {
+        "question": "How do you approach collaboration with frontend and DevOps teams to ensure seamless deployments, and what tools or strategies do you use to facilitate communication and integration?",
+        "expected_answer": "The candidate should discuss their experience with collaborating with cross-functional teams, including frontend and DevOps, and describe tools or strategies they use to facilitate communication, such as agile methodologies, version control systems, or continuous integration pipelines."
+      },
+      {
+        "question": "Can you explain the concept of CI/CD pipelines and how you would implement one using Git, GitHub Actions, and Docker?",
+        "expected_answer": "The candidate should describe the concept of CI/CD pipelines, including continuous integration, continuous deployment, and continuous monitoring, and provide an example of how they would implement a pipeline using Git, GitHub Actions, and Docker, including automated testing, building, and deployment."
+      },
+      {
+        "question": "Describe your experience with AI/ML libraries such as Scikit-learn, TensorFlow, or PyTorch, and how you would apply them to a real-world problem in a backend application.",
+        "expected_answer": "The candidate should outline their experience with AI/ML libraries, including data preprocessing, model training, and deployment, and provide an example of how they would apply these libraries to a real-world problem, such as image classification, natural language processing, or recommender systems."
+      },
+      {
+        "question": "How do you ensure that your code is clean, well-documented, and testable, and what tools or strategies do you use to maintain code quality?",
+        "expected_answer": "The candidate should discuss their approach to writing clean, well-documented, and testable code, including coding standards, documentation tools, and testing frameworks, and describe strategies they use to maintain code quality, such as code reviews, pair programming, or continuous integration."
+      }
+    ]
+  },
+  {
+    "filename": "Ahsan_Resume.pdf",
+    "questions": [
+      {
+        "question": "Can you explain the differences between monolithic architecture and microservices architecture in backend development, and how you would decide which one to use for a given project?",
+        "expected_answer": "The candidate should discuss the trade-offs between monolithic and microservices architectures, such as scalability, maintainability, and complexity, and provide examples of when to use each approach."
+      },
+      {
+        "question": "How do you optimize database queries for better performance, and what tools or techniques do you use to identify bottlenecks in your database?",
+        "expected_answer": "The candidate should describe their experience with database query optimization, including indexing, caching, and query rewriting, and mention tools like PostgreSQL's built-in query analyzer or third-party tools like pgBadger."
+      },
+      {
+        "question": "You have experience with .NET and Laravel, but our project uses Python with FastAPI. How would you approach learning FastAPI and adapting to our tech stack?",
+        "expected_answer": "The candidate should outline their strategy for learning FastAPI, including resources they would use (e.g., official documentation, tutorials, or online courses), and how they would apply their existing knowledge of backend development principles to the new framework."
+      },
+      {
+        "question": "Can you describe your experience with containerization using Docker, and how you would ensure seamless deployments of our SaaS product?",
+        "expected_answer": "The candidate should discuss their experience with Docker, including creating and managing containers, and describe how they would use Docker to ensure consistent and reliable deployments of our application."
+      },
+      {
+        "question": "How do you approach collaborative development with frontend and DevOps teams, and what tools or practices do you use to ensure smooth communication and integration?",
+        "expected_answer": "The candidate should describe their experience with collaborative development, including tools like Git, Jira, or Slack, and practices like regular meetings, code reviews, or pair programming, and emphasize the importance of clear communication and active listening."
+      },
+      {
+        "question": "You mentioned experience with AI-powered projects, such as the quiz generator using ChatGPT API. Can you explain how you would integrate AI or machine learning models into our backend services, and what considerations you would keep in mind for scalability and performance?",
+        "expected_answer": "The candidate should discuss their experience with AI or machine learning integrations, including model selection, training, and deployment, and describe how they would ensure scalability and performance of AI-powered features in our backend services."
+      },
+      {
+        "question": "Can you walk me through your process for writing clean, well-documented, and testable code, and what tools or practices do you use to maintain code quality?",
+        "expected_answer": "The candidate should describe their coding practices, including use of linters, formatters, or code review tools, and emphasize the importance of clear and concise documentation, as well as automated testing and continuous integration."
+      }
+    ]
+  },
+  {
+    "filename": "MilaAllenResume.pdf",
+    "questions": [
+      {
+        "question": "Can you explain your experience with Python backend development and how you've utilized it in previous projects?",
+        "expected_answer": "Details about experience with Python, mentioning specific projects and technologies used"
+      },
+      {
+        "question": "How do you optimize database queries and ensure data integrity, and can you provide an example from your previous experience?",
+        "expected_answer": "Explanation of methods used for optimization, such as indexing, caching, or query rewriting, and a specific example from their experience"
+      },
+      {
+        "question": "Have you worked with RESTful APIs, and if so, can you describe your experience with designing and building scalable APIs using FastAPI?",
+        "expected_answer": "Description of experience with RESTful APIs, mentioning specific technologies used, such as FastAPI, and examples of scalable API design"
+      },
+      {
+        "question": "How do you handle background jobs and asynchronous processing in your Python applications, and what tools or libraries do you use?",
+        "expected_answer": "Explanation of methods used for handling background jobs and asynchronous processing, such as Celery or Zato, and examples of their usage"
+      },
+      {
+        "question": "Can you describe your experience with containerized deployments using Docker, and how you've used it in previous projects?",
+        "expected_answer": "Description of experience with Docker, mentioning specific use cases, such as deployment, scaling, or management of containers"
+      },
+      {
+        "question": "How do you collaborate with frontend and DevOps teams to ensure seamless deployments, and what tools or methodologies do you use for collaboration?",
+        "expected_answer": "Explanation of methods used for collaboration, such as Agile or Scrum, and examples of tools used, such as Jira or Trello"
+      },
+      {
+        "question": "Can you explain your understanding of CI/CD pipelines and version control using Git, and how you've implemented them in previous projects?",
+        "expected_answer": "Description of understanding of CI/CD pipelines and version control, mentioning specific tools used, such as Jenkins or GitLab CI/CD, and examples of their implementation"
+      },
+      {
+        "question": "Have you worked with Machine Learning or Deep Learning libraries, and if so, can you describe your experience and how you've applied them in previous projects?",
+        "expected_answer": "Description of experience with Machine Learning or Deep Learning libraries, mentioning specific libraries used, such as scikit-learn or TensorFlow, and examples of their application"
+      },
+      {
+        "question": "Can you describe your experience with cloud platforms, such as AWS, Azure, or GCP, and how you've used them in previous projects?",
+        "expected_answer": "Description of experience with cloud platforms, mentioning specific services used, such as EC2 or S3, and examples of their usage"
+      }
+    ]
+  },
+  {
+    "filename": "TimothyDuncanResume.pdf",
+    "questions": [
+      {
+        "question": "Can you explain the difference between Django and Flask, and how you would choose between them for a backend project?",
+        "expected_answer": "Description of the differences between Django and Flask, and the factors that influence the choice between them, such as project complexity, development speed, and scalability requirements"
+      },
+      {
+        "question": "How do you optimize database queries in PostgreSQL, and what tools or techniques do you use to ensure data integrity?",
+        "expected_answer": "Explanation of techniques such as indexing, caching, and connection pooling, as well as tools like PostgreSQL's built-in query analyzer and third-party libraries like SQLAlchemy"
+      },
+      {
+        "question": "You have experience with data processing and analysis using libraries like NumPy, SciPy, and Matplotlib. How do you think these skills will translate to working with AI and ML libraries, and can you give an example of a project where you applied these skills?",
+        "expected_answer": "Description of how data processing skills are relevant to AI and ML, and an example of a project where they applied data analysis skills to a real-world problem"
+      },
+      {
+        "question": "Can you describe your experience with containerized deployments using Docker, and how you ensure seamless collaboration with frontend and DevOps teams?",
+        "expected_answer": "Explanation of experience with Docker, including containerization, image management, and deployment, as well as strategies for collaborating with other teams, such as using CI/CD pipelines and version control"
+      },
+      {
+        "question": "How do you stay up-to-date with the latest developments in AI and ML, and can you give an example of a recent project or experiment where you applied new skills or techniques?",
+        "expected_answer": "Description of resources used to stay current, such as blogs, conferences, or online courses, and an example of a project where they applied new AI or ML skills"
+      },
+      {
+        "question": "Can you walk me through your process for designing and implementing a RESTful API using FastAPI, including how you handle authentication, authorization, and error handling?",
+        "expected_answer": "Step-by-step explanation of the process, including design considerations, implementation details, and strategies for handling security and errors"
+      },
+      {
+        "question": "You have experience with cloud platforms like AWS. Can you describe your experience with cloud-based deployments, and how you ensure scalability and reliability in a cloud-based environment?",
+        "expected_answer": "Explanation of experience with cloud platforms, including deployment strategies, scalability techniques, and reliability measures, such as load balancing and fault tolerance"
+      }
+    ]
+  },
+  {
+    "filename": "VioletRodriguezResume.pdf",
+    "questions": [
+      {
+        "question": "Can you explain your experience with FastAPI and how you've used it to design and develop scalable RESTful APIs in your previous roles?",
+        "expected_answer": "Details about using FastAPI to build scalable APIs, including any challenges faced and solutions implemented"
+      },
+      {
+        "question": "How have you optimized database queries and ensured data integrity with PostgreSQL in your previous projects?",
+        "expected_answer": "Examples of optimizing database queries, ensuring data integrity, and any relevant tools or techniques used"
+      },
+      {
+        "question": "Can you describe your experience with integrating third-party services and internal microservices, and how you've handled any integration challenges?",
+        "expected_answer": "Details about integrating third-party services and internal microservices, including any challenges faced and solutions implemented"
+      },
+      {
+        "question": "How do you implement background jobs and asynchronous processing in your Python applications, and what tools or libraries do you use?",
+        "expected_answer": "Examples of implementing background jobs and asynchronous processing, including any relevant tools or libraries used"
+      },
+      {
+        "question": "Can you explain your understanding of Machine Learning and Deep Learning, and how you've applied these concepts in your previous projects?",
+        "expected_answer": "Details about understanding and applying Machine Learning and Deep Learning concepts, including any relevant tools or libraries used"
+      },
+      {
+        "question": "How do you collaborate with frontend and DevOps teams to ensure seamless deployments, and what tools or processes do you use to facilitate collaboration?",
+        "expected_answer": "Examples of collaborating with frontend and DevOps teams, including any relevant tools or processes used to facilitate collaboration"
+      },
+      {
+        "question": "Can you describe your experience with Docker and containerized deployments, and how you've used these technologies to improve deployment efficiency?",
+        "expected_answer": "Details about using Docker and containerized deployments, including any challenges faced and solutions implemented"
+      },
+      {
+        "question": "How do you approach writing clean, well-documented, and testable code, and what tools or techniques do you use to ensure code quality?",
+        "expected_answer": "Examples of writing clean, well-documented, and testable code, including any relevant tools or techniques used to ensure code quality"
+      },
+      {
+        "question": "Can you explain your understanding of CI/CD pipelines and version control using Git, and how you've applied these concepts in your previous projects?",
+        "expected_answer": "Details about understanding and applying CI/CD pipelines and version control using Git, including any relevant tools or libraries used"
+      },
+      {
+        "question": "Can you describe your experience with cloud platforms such as AWS, Azure, or GCP, and how you've used these platforms to deploy and manage applications?",
+        "expected_answer": "Details about using cloud platforms, including any challenges faced and solutions implemented"
+      }
+    ]
+  }
+]

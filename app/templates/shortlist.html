@@ -1,0 +1,455 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Shortlisted Candidates</h1>
+{% if job_title %}
+    <h2 class="job-subtitle">{{ job_title }}</h2>
+{% endif %}
+
+<div class="shortlisted-container">
+    {% if error_message %}
+        <div class="empty-shortlist-state">
+            <div class="empty-shortlist-icon">⚠️</div>
+            <div class="empty-shortlist-message">{{ error_message }}</div>
+            <div class="empty-shortlist-subtitle">Please upload more CVs to proceed with shortlisting.</div>
+        </div>
+    {% elif shortlisted %}
+        <div class="shortlisted-summary">
+            <div class="summary-info">
+                <span class="summary-icon">✨</span>
+                <span class="summary-text">{{ shortlisted|length }} candidate{{ 's' if shortlisted|length > 1 else '' }} shortlisted</span>
+            </div>
+        </div>
+        
+        <div class="candidates-grid">
+            {% for cv in shortlisted %}
+            <div class="candidate-card">
+                <div class="candidate-header">
+                    <div class="candidate-file-info">
+                        <span class="cv-icon">📄</span>
+                        <div class="file-details">
+                            <h3 class="candidate-filename">{{ cv.filename }}</h3>
+                            <span class="file-status">Shortlisted Candidate</span>
+                        </div>
+                    </div>
+                    <div class="shortlisted-badge">
+                        <span class="badge-icon">⭐</span>
+                        <span class="badge-text">Selected</span>
+                    </div>
+                </div>
+                
+                <div class="candidate-details">
+                    <div class="contact-info-section">
+                        <h4 class="section-title">
+                            <span class="section-icon">👤</span>
+                            Contact Information
+                        </h4>
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <div class="contact-label">
+                                    <span class="contact-icon">👤</span>
+                                    <span class="label-text">Name</span>
+                                </div>
+                                <div class="contact-value">{{ cv.name or 'Not specified' }}</div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-label">
+                                    <span class="contact-icon">📧</span>
+                                    <span class="label-text">Email</span>
+                                </div>
+                                <div class="contact-value">{{ cv.email or 'Not specified' }}</div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-label">
+                                    <span class="contact-icon">📱</span>
+                                    <span class="label-text">Phone</span>
+                                </div>
+                                <div class="contact-value">{{ cv.phone or 'Not specified' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="shortlist-reason-section">
+                        <h4 class="section-title">
+                            <span class="section-icon">💡</span>
+                            Shortlisting Reason
+                        </h4>
+                        <div class="reason-content">
+                            <p class="reason-text">{{ cv.reason }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-shortlist-state">
+            <div class="empty-shortlist-icon">📋</div>
+            <div class="empty-shortlist-message">No shortlist available yet for this job.</div>
+            <div class="empty-shortlist-subtitle">Candidates will appear here once they've been shortlisted.</div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+/* Shortlisted Candidates Styles */
+.job-subtitle {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 18px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.shortlisted-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Summary Section */
+.shortlisted-summary {
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+    color: white;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-2xl);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.summary-info {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.summary-icon {
+    font-size: 1.5rem;
+}
+
+/* Candidates Grid */
+.candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.candidate-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.candidate-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+}
+
+.candidate-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--success);
+}
+
+/* Candidate Header */
+.candidate-header {
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.candidate-file-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex: 1;
+}
+
+.cv-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.file-details {
+    flex: 1;
+}
+
+.candidate-filename {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-xs) 0;
+    word-break: break-word;
+}
+
+.file-status {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.shortlisted-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+
+.badge-icon {
+    font-size: 1rem;
+}
+
+/* Candidate Details */
+.candidate-details {
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+/* Contact Info Section */
+.contact-info-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border-left: 4px solid var(--primary);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-lg) 0;
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.section-icon {
+    font-size: 1.25rem;
+}
+
+.contact-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-200);
+    transition: all 0.2s;
+}
+
+.contact-item:hover {
+    border-color: var(--primary);
+    transform: translateX(2px);
+}
+
+.contact-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    min-width: 80px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.contact-icon {
+    font-size: 1rem;
+}
+
+.label-text {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.contact-value {
+    flex: 1;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+
+/* Shortlist Reason Section */
+.shortlist-reason-section {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border-left: 4px solid var(--success);
+    border: 1px solid var(--gray-200);
+}
+
+.reason-content {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.reason-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    font-style: italic;
+}
+
+.reason-text::before {
+    content: '"';
+    font-size: 1.5rem;
+    color: var(--success);
+    font-weight: bold;
+}
+
+.reason-text::after {
+    content: '"';
+    font-size: 1.5rem;
+    color: var(--success);
+    font-weight: bold;
+}
+
+/* Empty State */
+.empty-shortlist-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--gray-300);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-shortlist-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.empty-shortlist-message {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-shortlist-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .candidates-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .candidate-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .candidate-file-info {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .shortlisted-badge {
+        align-self: center;
+    }
+    
+    .contact-item {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
+    
+    .contact-label {
+        min-width: auto;
+        justify-content: center;
+    }
+    
+    .candidates-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .shortlisted-container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .shortlisted-summary {
+        padding: var(--spacing-md) var(--spacing-lg);
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .summary-info {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        font-size: 1rem;
+    }
+    
+    .candidate-header,
+    .candidate-details,
+    .contact-info-section,
+    .shortlist-reason-section {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.candidate-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.candidate-card:nth-child(even) {
+    animation-delay: 0.1s;
+}
+</style>
+{% endblock %}

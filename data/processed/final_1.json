@@ -1,0 +1,23 @@
+[
+  {
+    "filename": "CV (Muhammad Ali Khokhar).pdf",
+    "score": 80,
+    "reason": "The candidate has a strong background in AI/ML and Computer Vision, with experience in Python backend development, Docker, and containerized deployments. They demonstrated excellent problem-solving skills and communication skills during the call. However, they lack direct experience with FastAPI, SQLAlchemy, and PostgreSQL, which are required for the role. Additionally, their experience is mostly based on internships, which might not be equivalent to 2-4 years of professional experience. Overall, the candidate shows great potential but may require additional training or mentorship to meet all the requirements.",
+    "name": "Muhammad Ali Khokhar",
+    "interview_time": "2025-09-04T16:00:00+05:00"
+  },
+  {
+    "filename": "MilaAllenResume.pdf",
+    "score": 80,
+    "reason": "Mila Allen has extensive experience in Python development, SQL, and data engineering, which aligns with the job requirements. She demonstrated strong problem-solving skills and experience with optimizing database queries, designing scalable RESTful APIs, and integrating services. However, her experience with FastAPI, AI, Machine Learning, and Deep Learning is not explicitly mentioned in her CV, but she showed some relevant skills during the call. Additionally, her experience with Docker, containerized deployments, and cloud platforms is not clearly stated. Overall, Mila is a strong candidate, but some skills require further verification.",
+    "name": "Mila Allen",
+    "interview_time": "2025-09-04T16:45:00+05:00"
+  },
+  {
+    "filename": "TimothyDuncanResume.pdf",
+    "score": 80,
+    "reason": "The candidate has a strong background in Python development and experience with relevant technologies such as PostgreSQL, Docker, and containerized deployments. They demonstrated problem-solving skills and the ability to optimize database queries, implement data ingestion checks, and collaborate with other teams. However, their experience with FastAPI, SQLAlchemy, and AI/ML libraries is not explicitly mentioned in the CV data, but they showed some knowledge of AI, machine learning, and deep learning in the call transcript. Overall, the candidate seems suitable for the role, but may require some additional training or ramp-up time to get familiar with the specific requirements.",
+    "name": "TIMOTHY DUNCAN",
+    "interview_time": "2025-09-04T17:30:00+05:00"
+  }
+]

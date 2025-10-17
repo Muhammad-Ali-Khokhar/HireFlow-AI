@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Uploaded Applications</h1>
+<div class="applications-group-list">
+    {% if applications_by_job %}
+        {% for job_title, cvs in applications_by_job.items() %}
+        <div class="job-applications-card">
+            <div class="job-app-header dropdown-toggle" onclick="toggleDropdown('{{ loop.index }}')">
+                <div class="job-header-top">
+                    <span class="job-app-title">{{ job_title }}</span>
+                    <span class="job-app-count">
+                        {{ cvs|length }} Application{{ 's' if cvs|length > 1 else '' }}
+                        <span class="dropdown-arrow" id="arrow-{{ loop.index }}">▼</span>
+                    </span>
+                </div>
+            </div>
+            <div class="job-app-cvs hidden" id="dropdown-{{ loop.index }}">
+                {% for cv in cvs %}
+                <div class="application-tile">
+                    <span class="cv-icon">📄</span>
+                    <span class="cv-name">{{ cv.filename }}</span>
+                    {% if cv.filetype == 'pdf' %}
+                        <a href="{{ cv.preview_url }}" class="cv-view-btn">View</a>
+                    {% else %}
+                        <a href="{{ cv.url }}" class="cv-view-btn" target="_blank">Download</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="application-tile empty">No CVs uploaded yet.</div>
+    {% endif %}
+</div>
+
+<script>
+function toggleDropdown(index) {
+    const dropdown = document.getElementById(`dropdown-${index}`);
+    const arrow = document.getElementById(`arrow-${index}`);
+    dropdown.classList.toggle("hidden");
+    arrow.textContent = dropdown.classList.contains("hidden") ? "▼" : "▲";
+}
+</script>
+
+<style>
+.dropdown-toggle {
+    cursor: pointer;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.job-header-top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+    font-size: 16px;
+}
+.dropdown-arrow {
+    margin-left: 6px;
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    color: #333;
+}
+.job-app-cvs {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+.hidden {
+    display: none;
+}
+</style>
+{% endblock %}

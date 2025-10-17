@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Select a Job to View Shortlist</h1>
+<div class="jobs-list">
+    {% for job in jobs %}
+    <div class="job-card improved">
+        <div class="job-header">
+            <h2 class="job-title">{{ job.title }}</h2>
+            <span class="job-type">{{ job.type or "Full Time" }}</span>
+        </div>
+        <div class="job-meta-row">
+            <span class="meta-label">📍 Location:</span> <span class="meta-value">{{ job.location }}</span>
+            <span class="meta-label">⏳ Experience:</span> <span class="meta-value">{{ job.experience }}</span>
+        </div>
+        <br>
+    <a href="/shortlist/{{ job.id }}" class="apply-btn" style="margin-top:12px;">Shortlist Now</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

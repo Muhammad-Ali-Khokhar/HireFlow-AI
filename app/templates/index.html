@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home-hero">
+    <h1>Welcome to <span class="brand">Hiredroid</span></h1>
+    <p class="subtitle">
+        Experience our AI-driven hiring demo — from CV uploads to intelligent candidate shortlisting.
+    </p>
+
+    <div class="cta-container right-cta">
+        <a href="{{ url_for('jobs') }}" class="cv-view-btn">
+            View Jobs & Apply
+        </a>
+    </div>
+
+    <div class="features-row">
+        <div class="feature-tile">
+            <div class="feature-icon">🚀</div>
+            <div class="feature-title">Efficient Hiring</div>
+            <div class="feature-desc">Save time with automated workflows and faster screening.</div>
+        </div>
+        <div class="feature-tile">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-title">AI-Powered Matching</div>
+            <div class="feature-desc">Analyze and shortlist candidates that best match your job needs.</div>
+        </div>
+        <div class="feature-tile">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Actionable Insights</div>
+            <div class="feature-desc">View structured results and monitor progress in real-time.</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

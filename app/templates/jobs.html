@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Open Positions</h1>
+{% if message %}
+    <div class="alert success">{{ message }}</div>
+{% endif %}
+<div class="jobs-list">
+    {% for job in jobs %}
+    <div class="job-card improved">
+        <div class="job-header">
+            <h2 class="job-title">{{ job.title }}</h2>
+            <span class="job-type">{{ job.type or "Full Time" }}</span>
+        </div>
+        <div class="job-meta-row">
+            <span class="meta-label">📍 Location:</span> <span class="meta-value">{{ job.location }}</span>
+            <span class="meta-label">⏳ Experience:</span> <span class="meta-value">{{ job.experience }}</span>
+        </div>
+        <div class="job-section">
+            <h3 class="section-title">Job Description</h3>
+            <div class="job-desc">{{ job.description.split('Responsibilities:')[0].strip() }}</div>
+        </div>
+        {% if 'Responsibilities:' in job.description %}
+        <div class="job-section">
+            <h3 class="section-title">Responsibilities</h3>
+            <ul class="job-list">
+            {% for line in job.description.split('Responsibilities:')[1].split('Requirements:')[0].split('\n') if line.strip().startswith('-') %}
+                <li>{{ line.strip()[1:].strip() }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if 'Requirements:' in job.description %}
+        <div class="job-section">
+            <h3 class="section-title">Requirements</h3>
+            <ul class="job-list">
+            {% for line in job.description.split('Requirements:')[1].split('\n') if line.strip().startswith('-') %}
+                <li>{{ line.strip()[1:].strip() }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="job-section">
+            <h3 class="section-title">Tech Stack</h3>
+            <div class="job-stack">{{ job.stack | join(', ') }}</div>
+        </div>
+        <form class="job-apply-form" action="/apply" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="job_id" value="{{ job.id }}">
+            <input type="file" name="cv" required>
+            <button type="submit" class="apply-btn">Upload CV</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Final Picks</h1>
+
+<div class="extracted-cv-container">
+    {% if all_jobs %}
+    {% for job in all_jobs %}
+    <div class="job-applications-card">
+        <!-- Use extraction.html's styling for title and count -->
+        <div class="job-app-header dropdown-toggle" onclick="toggleDropdown('{{ loop.index }}')">
+            <div class="job-header-top">
+                <span class="job-app-title">{{ job.title }}</span>
+                <span class="job-app-count">
+                    {{ job.final_picks|length }} Final Pick{{ 's' if job.final_picks|length > 1 else '' }}
+                    <span class="dropdown-arrow" id="arrow-{{ loop.index }}">▼</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Keep dropdown grid structure -->
+        <div class="final-wrapper hidden" id="dropdown-{{ loop.index }}">
+            {% if job.final_picks %}
+            {% for pick in job.final_picks %}
+            <div class="candidate-pick-card">
+                <div class="candidate-header">
+                    <div class="candidate-info">
+                        <span class="cv-icon">📄</span>
+                        <div class="candidate-details">
+                            <span class="cv-name">{{ pick.name }}</span>
+                            <a href="/cvs/{{ job.id }}_{{ pick.filename }}" class="cv-download-link">
+                                <span class="download-icon">📎</span> Download CV
+                            </a>
+                        </div>
+                    </div>
+                    <div class="interview-info">
+                        <span class="interview-icon">🕒</span>
+                        <span class="interview-text">Interview: {{ pick.interview_time | format_datetime }}</span>
+                    </div>
+                </div>
+                <div class="reason-content">
+                    <h3 class="reason-title">Selection Reason</h3>
+                    <p class="reason-text">{{ pick.reason }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-extraction-state">
+                <div class="empty-extraction-icon">📭</div>
+                <div class="empty-extraction-message">No final picks available for this job.</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-extraction-state">
+        <div class="empty-extraction-icon">📭</div>
+        <div class="empty-extraction-message">No jobs available yet.</div>
+        <div class="empty-extraction-subtitle">Once jobs are added, they will appear here.</div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleDropdown(index) {
+    console.log(`[toggleDropdown] Called with index: ${index}`);
+    const dropdown = document.getElementById(`dropdown-${index}`);
+    const arrow = document.getElementById(`arrow-${index}`);
+    if (dropdown && arrow) {
+        console.log(`[toggleDropdown] Found dropdown: ${dropdown.id}, hidden: ${dropdown.classList.contains('hidden')}`);
+        dropdown.classList.toggle("hidden");
+        arrow.textContent = dropdown.classList.contains("hidden") ? "▼" : "▲";
+        console.log(`[toggleDropdown] New hidden state: ${dropdown.classList.contains('hidden')}`);
+    } else {
+        console.error(`[toggleDropdown] Element not found: dropdown-${index} or arrow-${index}`);
+    }
+}
+</script>
+
+<style>
+/* Dropdown styles */
+.dropdown-toggle {
+    cursor: pointer;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.job-header-top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+    font-size: 16px;
+}
+.dropdown-arrow {
+    margin-left: 6px;
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    color: #333;
+}
+.hidden {
+    display: none !important;
+}
+
+/* Final Picks Page Styles (aligned with extraction.html) */
+.extracted-cv-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.job-applications-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+.job-app-header {
+    cursor: pointer;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.job-app-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+}
+.job-app-count {
+    font-size: 14px;
+    color: #ffffff;
+    background: #28a745; /* Green background from extraction.html */
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Responsive Design for Header */
+@media (max-width: 768px) {
+    .job-header-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    .job-app-count {
+        align-self: center;
+    }
+}
+
+/* Existing styles for other elements (unchanged) */
+.final-wrapper {
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.candidate-pick-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.candidate-pick-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.candidate-pick-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.candidate-header {
+    padding: var(--spacing-xl);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.candidate-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.candidate-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.cv-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.cv-download-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    transition: color 0.2s;
+}
+
+.cv-download-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.download-icon {
+    font-size: 0.9rem;
+}
+
+.interview-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.interview-icon {
+    font-size: 1.2rem;
+}
+
+.interview-text {
+    color: var(--text-primary);
+}
+
+.reason-content {
+    padding: var(--spacing-xl);
+}
+
+.reason-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.reason-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.empty-extraction-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--gray-300);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-extraction-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.empty-extraction-message {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-extraction-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* Responsive Design for Other Elements */
+@media (max-width: 768px) {
+    .final-wrapper {
+        padding: var(--spacing-lg);
+    }
+
+    .candidate-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .candidate-info {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+
+    .candidate-details {
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .extracted-cv-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .final-wrapper {
+        padding: var(--spacing-lg);
+    }
+
+    .candidate-header,
+    .reason-content {
+        padding: var(--spacing-lg);
+    }
+}
+</style>
+{% endblock %}

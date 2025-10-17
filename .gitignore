@@ -1,0 +1,31 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.db
+
+# --- Virtual environment ---
+venv/
+.env/
+.venv/
+
+# --- Environment & secrets ---
+.env
+credentials.json
+token.json
+
+# --- App specific ---
+voices/
+testing.py
+
+# --- VSCode / IDE ---
+.vscode/
+.idea/
+*.swp
+
+# --- Mac / Windows ---
+.DS_Store
+Thumbs.db

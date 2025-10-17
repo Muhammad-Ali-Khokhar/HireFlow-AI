@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Backend Python Developer",
+    "description": "We are seeking a talented Backend Python Developer with experience with AI to join our growing engineering team. You will be responsible for designing, developing, and maintaining robust APIs and backend services for our SaaS products.\n\nResponsibilities:\n- Architect, build, and maintain scalable RESTful APIs using FastAPI.\n- Integrate with third-party services and internal microservices.\n- Optimize database queries and ensure data integrity with PostgreSQL.\n- Implement background jobs and asynchronous processing.\n- Collaborate with frontend and DevOps teams for seamless deployments.\n- Write clean, well-documented, and testable code.\n\nRequirements:\n- Also have knowledge about Machine Learning and Deep Learning plus Computer Vision\n- 2-4 years of professional experience in Python backend development.\n- Strong knowledge of FastAPI, SQLAlchemy, and PostgreSQL.\n- Experience with Docker and containerized deployments.\n- Familiarity with cloud platforms (AWS, Azure, or GCP) is a plus.\n- Understanding of CI/CD pipelines and version control (Git).\n- Bonus: Experience with AI/ML libraries or LangChain.\n- Excellent problem-solving and communication skills.",
+    "stack": ["Python", "FastAPI", "PostgreSQL", "Docker", "LangChain"],
+    "location": "Karachi, Pakistan",
+    "experience": "2-4 years",
+    "type": "Full-time"
+  },
+  {
+    "id": 2,
+    "title": "Frontend React Developer",
+    "description": "Join our dynamic frontend team to build beautiful, responsive web applications for our clients. You will work closely with designers and backend engineers to deliver seamless user experiences.\n\nResponsibilities:\n- Develop and maintain modern web interfaces using React and TypeScript.\n- Integrate RESTful APIs and handle state management (Redux/Zustand).\n- Ensure cross-browser compatibility and mobile responsiveness.\n- Write reusable, scalable, and well-tested components.\n- Collaborate with UI/UX designers to implement pixel-perfect designs.\n- Participate in code reviews and agile ceremonies.\n\nRequirements:\n- 1-3 years of experience in frontend development.\n- Proficient in React, JavaScript/TypeScript, and CSS frameworks (Tailwind preferred).\n- Experience with API integration and async data flows.\n- Familiarity with Figma or similar design tools.\n- Knowledge of testing frameworks (Jest, React Testing Library) is a plus.\n- Strong attention to detail and teamwork skills.",
+    "stack": ["React", "TypeScript", "Tailwind", "REST APIs"],
+    "location": "Remote / Hybrid",
+    "experience": "1-3 years",
+    "type": "Full-time"
+  },
+  {
+    "id": 3,
+    "title": "DevOps Engineer",
+    "description": "We are looking for a proactive DevOps Engineer to automate, monitor, and optimize our cloud infrastructure. You will play a key role in ensuring high availability and scalability of our applications.\n\nResponsibilities:\n- Design and implement CI/CD pipelines for multiple environments.\n- Manage cloud infrastructure (AWS, Azure, or GCP) using IaC tools (Terraform, CloudFormation).\n- Monitor system health and automate alerts/responses.\n- Optimize Docker container orchestration (Kubernetes/ECS).\n- Collaborate with development teams for smooth deployments.\n- Ensure security best practices and compliance.\n\nRequirements:\n- 2+ years of experience in DevOps or SRE roles.\n- Hands-on with Docker, Kubernetes, and CI/CD tools (GitHub Actions, Jenkins).\n- Experience with monitoring tools (Prometheus, Grafana, ELK).\n- Scripting skills in Bash or Python.\n- Strong troubleshooting and communication skills.",
+    "stack": ["AWS", "Docker", "Kubernetes", "Terraform", "CI/CD"],
+    "location": "Lahore, Pakistan / Remote",
+    "experience": "2+ years",
+    "type": "Full-time"
+  },
+  {
+    "id": 4,
+    "title": "UI/UX Designer",
+    "description": "We are seeking a creative UI/UX Designer to craft intuitive and visually appealing interfaces for our web and mobile products.\n\nResponsibilities:\n- Design wireframes, prototypes, and high-fidelity mockups.\n- Conduct user research and usability testing.\n- Collaborate with developers to ensure design feasibility.\n- Maintain and evolve our design system.\n- Present design concepts to stakeholders.\n\nRequirements:\n- 1+ years of experience in UI/UX design.\n- Proficient with Figma, Adobe XD, or Sketch.\n- Strong portfolio of web/mobile projects.\n- Understanding of accessibility and responsive design.\n- Excellent communication and teamwork skills.",
+    "stack": ["Figma", "Adobe XD", "Sketch", "UI/UX"],
+    "location": "Islamabad, Pakistan / Remote",
+    "experience": "1+ years",
+    "type": "Full-time"
+  }
+]

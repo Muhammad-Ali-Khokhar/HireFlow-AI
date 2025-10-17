@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiredroid</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-text">
+            <div class="loading-spinner"></div>
+            <span id="loadingText">Processing...</span>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h2>Hiredroid</h2>
+        <div class="sidebar-menu">
+            <a href="/" class="sidebar-btn">🏠 Home</a>
+            <a href="/jobs" class="sidebar-btn">📄 Jobs</a>
+            <a href="/applications" class="sidebar-btn">📥 Applications</a>
+            <a href="/extraction" class="sidebar-btn">📊 Extraction</a>
+            <a href="/shortlist" class="sidebar-btn">✅ Shortlist</a>
+            <a href="/screening" class="sidebar-btn">📜 Screening</a>
+            <a href="/calls" class="sidebar-btn">📞 Calls</a>
+            <a href="/final" class="sidebar-btn">🎯 Final Picks</a>
+        </div>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        // Loading functions
+        function showLoading(message = 'Processing...') {
+            document.getElementById('loadingText').textContent = message;
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // Auto-attach to forms
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const submitBtn = this.querySelector('button[type="submit"], .apply-btn, .upload-btn');
+                    if (submitBtn) {
+                        submitBtn.classList.add('btn-loading');
+                        showLoading('Processing...');
+                    }
+                });
+            });
+
+            // Auto-attach to buttons with specific classes
+            document.querySelectorAll('a[href*="/shortlist/"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    showLoading('Generating shortlist...');
+                });
+            });
+
+            document.querySelectorAll('a[href*="/screening/"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    showLoading('Loading screening questions...');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

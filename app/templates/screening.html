@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Screening Questions for Calls</h1>
+{% if job_title %}
+    <h2 class="job-subtitle">{{ job_title }}</h2>
+{% endif %}
+
+<div class="screening-container">
+    {% if not job_id %}
+        <!-- Job Selection View -->
+        <div class="jobs-grid">
+            {% for job in jobs %}
+            <div class="job-card improved">
+                <div class="job-header">
+                    <div class="job-title-section">
+                        <h2 class="job-title">{{ job.title }}</h2>
+                        <span class="job-type">{{ job.type or "Full Time" }}</span>
+                    </div>
+                </div>
+                <div class="job-meta-enhanced">
+                    <div class="meta-item">
+                        <span class="meta-icon">📍</span>
+                        <span class="meta-label">Location:</span>
+                        <span class="meta-value">{{ job.location }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">⏳</span>
+                        <span class="meta-label">Experience:</span>
+                        <span class="meta-value">{{ job.experience }}</span>
+                    </div>
+                </div>
+                <div class="job-actions">
+                    <a href="/screening/{{ job.id }}" class="apply-btn screening-btn">
+                        <span class="btn-icon">📋</span>
+                        View Screening Questions
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Screening Questions Detail View -->
+        <div class="screening-questions-wrapper">
+            {% if screening_data %}
+                {% for entry in screening_data %}
+                <div class="candidate-screening-card">
+                    <div class="candidate-header">
+                        <div class="candidate-info">
+                            <span class="cv-icon">📄</span>
+                            <div class="candidate-details">
+                                <span class="cv-name">{{ entry.filename }}</span>
+                                {% set cv_filename = entry.filename if entry.filename.endswith('.pdf') else entry.filename + '.pdf' %}
+                                <a href="/cvs/{{ job_id }}_{{ cv_filename }}" class="cv-download-link">
+                                    <span class="download-icon">📎</span>
+                                    Download CV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="questions-content">
+                        <details class="questions-dropdown">
+                            <summary class="questions-header">
+                                <span class="questions-icon">🎯</span>
+                                <h3 class="questions-title">Screening Questions</h3>
+                            </summary>
+                            <div class="questions-list-container">
+                                {% for q in entry.questions %}
+                                <div class="question-card">
+                                    <div class="question-number">Q{{ loop.index }}</div>
+                                    <div class="question-content">
+                                        <div class="question-text">{{ q.question }}</div>
+                                        <div class="expected-answer-section">
+                                            <div class="expected-answer-header">
+                                                <span class="answer-icon">💡</span>
+                                                <span class="answer-label">What to look for:</span>
+                                            </div>
+                                            <div class="expected-answer-text">{{ q.expected_answer }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-screening-state">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-message">No screening questions available yet for this job.</div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+/* Enhanced Screening Questions Styles */
+.job-subtitle {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 18px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.screening-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Job Selection Grid */
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.job-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.job-meta-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 0.95rem;
+}
+
+.meta-icon {
+    font-size: 1rem;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.meta-value {
+    color: var(--text-secondary);
+}
+
+.job-actions {
+    margin-top: var(--spacing-lg);
+}
+
+.screening-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+}
+
+/* Screening Questions Detail Styles */
+.screening-questions-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.candidate-screening-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.candidate-screening-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.candidate-screening-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.candidate-header {
+    padding: var(--spacing-xl);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.candidate-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.candidate-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.cv-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.cv-download-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    transition: color 0.2s;
+}
+
+.cv-download-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.download-icon {
+    font-size: 0.9rem;
+}
+
+.questions-content {
+    padding: var(--spacing-xl);
+}
+
+.questions-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--gray-200);
+    cursor: pointer;
+}
+
+.questions-icon {
+    font-size: 1.5rem;
+}
+
+.questions-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.questions-dropdown {
+    margin-bottom: var(--spacing-xl);
+}
+
+.questions-dropdown summary {
+    outline: none;
+}
+
+.questions-dropdown[open] .questions-icon::before {
+    content: '▼';
+}
+
+.questions-dropdown:not([open]) .questions-icon::before {
+    content: '▶';
+}
+
+.questions-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+}
+
+.question-card {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary);
+    transition: all 0.2s;
+}
+
+.question-card:hover {
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.question-number {
+    background: var(--primary);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 600;
+    height: fit-content;
+    min-width: 40px;
+    text-align: center;
+}
+
+.question-content {
+    flex: 1;
+}
+
+.question-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.expected-answer-section {
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    border-left: 3px solid var(--success);
+}
+
+.expected-answer-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.answer-icon {
+    font-size: 1rem;
+}
+
+.answer-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--success);
+}
+
+.expected-answer-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Empty State */
+.empty-screening-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--gray-300);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.empty-message {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .jobs-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .job-title-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    
+    .job-meta-enhanced {
+        grid-template-columns: 1fr;
+    }
+    
+    .candidate-info {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+    
+    .candidate-details {
+        align-items: center;
+    }
+    
+    .question-card {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .question-number {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .screening-container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .candidate-header,
+    .questions-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .question-card {
+        padding: var(--spacing-md);
+    }
+}
+</style>
+{% endblock %}

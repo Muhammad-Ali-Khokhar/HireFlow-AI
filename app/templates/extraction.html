@@ -1,0 +1,453 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Extracted CV Data</h1>
+
+<div class="extracted-cv-container">
+    {% if extracted_by_job %}
+        {% for job_title, cvs in extracted_by_job.items() %}
+        <div class="job-applications-card">
+            <div class="job-app-header dropdown-toggle" onclick="toggleDropdown('{{ loop.index }}')">
+                <div class="job-header-top">
+                <span class="job-app-title">{{ job_title }}</span>
+                <span class="job-app-count">
+                    {{ cvs|length }} Applications{{ 's' if cvs|length > 1 else '' }}
+                    <span class="dropdown-arrow" id="arrow-{{ loop.index }}">▼</span>
+                </span>
+                </div>
+            </div>
+            <div class="cv-extractions-grid hidden" id="dropdown-{{ loop.index }}">
+                {% for cv in cvs %}
+                <div class="cv-extraction-card">
+                    <div class="cv-card-header">
+                        <div class="cv-file-info">
+                            <span class="cv-icon">📄</span>
+                            <div class="cv-file-details">
+                                <h3 class="cv-filename">{{ cv.filename }}</h3>
+                                <span class="file-type-indicator">PDF Document</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cv-data-section">
+                        <div class="extracted-info-grid">
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <span class="info-icon">👤</span>
+                                    <span class="label-text">Name</span>
+                                </div>
+                                <div class="info-value">{{ cv.data.name or 'Not specified' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <span class="info-icon">📧</span>
+                                    <span class="label-text">Email</span>
+                                </div>
+                                <div class="info-value">{{ cv.data.email or 'Not specified' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <span class="info-icon">📱</span>
+                                    <span class="label-text">Phone</span>
+                                </div>
+                                <div class="info-value">{{ cv.data.phone or 'Not specified' }}</div>
+                            </div>
+                        </div>
+                        <div class="raw-text-section">
+                            <details class="raw-text-details">
+                                <summary class="raw-text-summary">
+                                    <span class="summary-icon">📝</span>
+                                    <span class="summary-text">View Raw Text Content</span>
+                                    <span class="expand-indicator">▼</span>
+                                </summary>
+                                <div class="raw-text-content">
+                                    <pre class="raw-text-display">{{ cv.data.raw_text }}</pre>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-extraction-state">
+            <div class="empty-extraction-icon">📭</div>
+            <div class="empty-extraction-message">No extracted data available yet.</div>
+            <div class="empty-extraction-subtitle">Upload some CVs to see extracted information here.</div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleDropdown(index) {
+    console.log(`[toggleDropdown] Called with index: ${index}`);
+    const dropdown = document.getElementById(`dropdown-${index}`);
+    const arrow = document.getElementById(`arrow-${index}`);
+    if (dropdown && arrow) {
+        console.log(`[toggleDropdown] Found dropdown: ${dropdown.id}, hidden: ${dropdown.classList.contains('hidden')}`);
+        dropdown.classList.toggle("hidden");
+        arrow.textContent = dropdown.classList.contains("hidden") ? "▼" : "▲";
+        console.log(`[toggleDropdown] New hidden state: ${dropdown.classList.contains('hidden')}`);
+    } else {
+        console.error(`[toggleDropdown] Element not found: dropdown-${index} or arrow-${index}`);
+    }
+}
+</script>
+
+<style>
+/* Dropdown styles */
+.dropdown-toggle {
+    cursor: pointer;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.job-header-top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+    font-size: 16px;
+}
+.dropdown-arrow {
+    margin-left: 6px;
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    color: #333;
+}
+.hidden {
+    display: none !important;
+}
+
+/* Extracted CV Data Styles */
+.extracted-cv-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.job-applications-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+.job-app-header {
+  cursor: pointer;
+  padding: 12px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.job-header-top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: 600;
+  font-size: 16px;
+}
+.job-app-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+}
+.job-app-count {
+  font-size: 14px;
+  color: #ffffff;
+}
+.dropdown-arrow {
+  margin-left: 6px;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+  color: #333;
+}
+
+/* CV Extractions Grid */
+.cv-extractions-grid {
+    padding: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.cv-extraction-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cv-extraction-card:hover {
+    background: var(--bg-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.cv-card-header {
+    padding: var(--spacing-lg);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.cv-file-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.cv-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.cv-file-details {
+    flex: 1;
+}
+
+.cv-filename {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-xs) 0;
+    word-break: break-word;
+}
+
+.file-type-indicator {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: var(--gray-100);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+/* CV Data Section */
+.cv-data-section {
+    padding: var(--spacing-lg);
+}
+
+.extracted-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--primary);
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    min-width: 80px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.info-icon {
+    font-size: 1rem;
+}
+
+.label-text {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-value {
+    flex: 1;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+
+/* Raw Text Section */
+.raw-text-section {
+    margin-top: var(--spacing-lg);
+}
+
+.raw-text-details {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-primary);
+}
+
+.raw-text-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    border: none;
+}
+
+.raw-text-summary:hover {
+    background: linear-gradient(135deg, var(--gray-200) 0%, var(--gray-100) 100%);
+    color: var(--text-primary);
+}
+
+.summary-icon {
+    font-size: 1rem;
+}
+
+.summary-text {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.expand-indicator {
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+}
+
+.raw-text-details[open] .expand-indicator {
+    transform: rotate(180deg);
+}
+
+.raw-text-content {
+    border-top: 1px solid var(--gray-200);
+}
+
+.raw-text-display {
+    white-space: pre-wrap;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    padding: var(--spacing-lg);
+    margin: 0;
+    font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+    line-height: 1.5;
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 0;
+}
+
+/* Empty State */
+.empty-extraction-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--gray-300);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-extraction-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.empty-extraction-message {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-extraction-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .cv-extractions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .job-header-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    text-align: center;
+    }
+    .job-app-count {
+    align-self: center;
+    }
+    
+    .cv-extractions-grid {
+        padding: var(--spacing-lg);
+    }
+    
+    .info-item {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .info-label {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .extracted-cv-container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .job-extraction-header,
+    .cv-extractions-grid {
+        padding: var(--spacing-lg);
+    }
+    
+    .cv-card-header,
+    .cv-data-section {
+        padding: var(--spacing-md);
+    }
+    
+    .cv-file-info {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+}
+
+/* Scrollbar for raw text */
+.raw-text-display::-webkit-scrollbar {
+    width: 6px;
+}
+
+.raw-text-display::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+.raw-text-display::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius-sm);
+}
+
+.raw-text-display::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+</style>
+{% endblock %}

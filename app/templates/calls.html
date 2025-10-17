@@ -1,0 +1,613 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Call Management</h1>
+
+<div class="extracted-cv-container">
+    {% if jobs_with_candidates %}
+        {% for job in jobs_with_candidates %}
+        <div class="job-applications-card">
+            <div class="job-app-header dropdown-toggle" onclick="toggleDropdown('{{ loop.index }}')">
+                <div class="job-header-top">
+                    <span class="job-app-title">{{ job.title }}</span>
+                    <span class="job-app-count">
+                        {{ job.candidates|length }} Candidate{{ 's' if job.candidates|length > 1 else '' }}
+                        <span class="dropdown-arrow" id="arrow-{{ loop.index }}">▼</span>
+                    </span>
+                </div>
+            </div>
+            <div class="calls-wrapper hidden" id="dropdown-{{ loop.index }}">
+                {% if job.candidates %}
+                    {% for candidate in job.candidates %}
+                    <div class="candidate-call-card">
+                        <div class="candidate-header">
+                            <div class="candidate-info">
+                                <span class="cv-icon">📄</span>
+                                <div class="candidate-details">
+                                    <span class="cv-name">{{ candidate.filename }}</span>
+                                    <a href="/cvs/{{ job.id }}_{{ candidate.filename }}" class="cv-download-link">
+                                        <span class="download-icon">📎</span>
+                                        Download CV
+                                    </a>
+                                </div>
+                                <div class="call-status">
+                                    <span class="status-icon">{{ '✅' if candidate.call_status == 'done' else '⏳' }}</span>
+                                    <span class="status-text">{{ 'Call Completed' if candidate.call_status == 'done' else 'Call Pending' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="call-content">
+                            <div class="transcript-header">
+                                <span class="transcript-icon">📝</span>
+                                <h3 class="transcript-title">Call Transcript</h3>
+                            </div>
+                            <div class="transcript-container">
+                                {% if candidate.transcript %}
+                                    <textarea class="transcript-text" readonly>{{ candidate.transcript }}</textarea>
+                                {% else %}
+                                    <div class="no-transcript">No transcript available yet.</div>
+                                {% endif %}
+                            </div>
+                            <div class="transcript-upload">
+                                <form action="/calls/{{ job.id }}/upload_transcript" method="post" enctype="multipart/form-data" class="upload-form">
+                                    <input type="hidden" name="filename" value="{{ candidate.filename }}">
+                                    <div class="upload-section">
+                                        <label for="transcript-{{ candidate.filename }}" class="upload-label">
+                                            <span class="upload-icon">📎</span>
+                                            Upload Transcript or Audio:
+                                        </label>
+                                        <div class="file-input-wrapper">
+                                            <input type="file" 
+                                                   id="transcript-{{ candidate.filename }}" 
+                                                   name="transcript" 
+                                                   accept=".txt,.mp3,.wav" 
+                                                   class="upload-input"
+                                                   onchange="updateFileLabel(this)">
+                                            <label for="transcript-{{ candidate.filename }}" class="file-input-label">
+                                                <span class="file-icon">📁</span>
+                                                <span class="file-text">Choose file (.txt, .mp3, .wav)</span>
+                                            </label>
+                                        </div>
+                                        <div class="file-info" id="file-info-{{ candidate.filename }}">
+                                            <span class="file-type-hint">💡 Text files (.txt) or Audio files (.mp3, .wav) supported</span>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="upload-btn" id="upload-btn-{{ candidate.filename }}">
+                                        <span class="btn-icon">⬆️</span>
+                                        Upload & Process
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-extraction-state">
+                        <div class="empty-extraction-icon">📭</div>
+                        <div class="empty-extraction-message">No shortlisted candidates available for this job.</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-extraction-state">
+            <div class="empty-extraction-icon">📭</div>
+            <div class="empty-extraction-message">No jobs with candidates available yet.</div>
+            <div class="empty-extraction-subtitle">Create jobs and shortlist candidates to see them here.</div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleDropdown(index) {
+    console.log(`[toggleDropdown] Called with index: ${index}`);
+    const dropdown = document.getElementById(`dropdown-${index}`);
+    const arrow = document.getElementById(`arrow-${index}`);
+    if (dropdown && arrow) {
+        console.log(`[toggleDropdown] Found dropdown: ${dropdown.id}, hidden: ${dropdown.classList.contains('hidden')}`);
+        dropdown.classList.toggle("hidden");
+        arrow.textContent = dropdown.classList.contains("hidden") ? "▼" : "▲";
+        console.log(`[toggleDropdown] New hidden state: ${dropdown.classList.contains('hidden')}`);
+    } else {
+        console.error(`[toggleDropdown] Element not found: dropdown-${index} or arrow-${index}`);
+    }
+}
+
+function updateFileLabel(input) {
+    const filename = input.files[0]?.name;
+    const fileLabel = input.parentElement.querySelector('.file-text');
+    const fileInfo = document.getElementById(`file-info-${input.id.split('-').pop()}`);
+    const uploadBtn = document.getElementById(`upload-btn-${input.id.split('-').pop()}`);
+    
+    if (filename) {
+        fileLabel.textContent = filename;
+        
+        // Update file info based on type
+        const extension = filename.split('.').pop().toLowerCase();
+        let infoText = '';
+        let infoClass = 'file-type-info';
+        
+        switch(extension) {
+            case 'txt':
+                infoText = '📄 Text file - will be uploaded directly';
+                infoClass = 'file-type-text';
+                break;
+            case 'mp3':
+                infoText = '🎵 MP3 audio - will be converted and transcribed';
+                infoClass = 'file-type-audio';
+                break;
+            case 'wav':
+                infoText = '🔊 WAV audio - will be transcribed';
+                infoClass = 'file-type-audio';
+                break;
+            default:
+                infoText = '❌ Unsupported file type';
+                infoClass = 'file-type-error';
+        }
+        
+        fileInfo.innerHTML = `<span class="${infoClass}">${infoText}</span>`;
+        uploadBtn.disabled = false;
+    } else {
+        fileLabel.textContent = 'Choose file (.txt, .mp3, .wav)';
+        fileInfo.innerHTML = '<span class="file-type-hint">💡 Text files (.txt) or Audio files (.mp3, .wav) supported</span>';
+        uploadBtn.disabled = true;
+    }
+}
+</script>
+
+<style>
+/* Dropdown styles */
+.dropdown-toggle {
+    cursor: pointer;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.job-header-top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+    font-size: 16px;
+}
+.dropdown-arrow {
+    margin-left: 6px;
+    font-size: 14px;
+    transition: transform 0.2s ease;
+    color: #333;
+}
+.hidden {
+    display: none !important;
+}
+
+/* Enhanced Upload Styles */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.upload-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.upload-icon {
+    font-size: 1.1rem;
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+.upload-input {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 50px;
+}
+
+.file-input-label:hover {
+    background: var(--gray-100);
+    border-color: var(--primary);
+}
+
+.file-icon {
+    font-size: 1.2rem;
+}
+
+.file-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.file-info {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+}
+
+.file-type-hint {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.file-type-text {
+    color: var(--success);
+    background: var(--success-bg);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+}
+
+.file-type-audio {
+    color: var(--primary);
+    background: var(--primary-bg);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+}
+
+.file-type-error {
+    color: var(--danger);
+    background: var(--danger-bg);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+}
+
+.upload-btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    min-height: 44px;
+}
+
+.upload-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.upload-btn:disabled {
+    background: var(--gray-400);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+/* Calls Page Styles (aligned with extraction.html) */
+.extracted-cv-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.job-applications-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+.job-app-header {
+    cursor: pointer;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.job-app-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+}
+.job-app-count {
+    font-size: 14px;
+    color: #ffffff;
+    background: #28a745; /* Green background from extraction.html */
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Responsive Design for Header */
+@media (max-width: 768px) {
+    .job-header-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    .job-app-count {
+        align-self: center;
+    }
+}
+
+/* Existing styles for other elements (unchanged) */
+.calls-wrapper {
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
+.candidate-call-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.candidate-call-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.candidate-call-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.candidate-header {
+    padding: var(--spacing-xl);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.candidate-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.candidate-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.cv-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.cv-download-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    transition: color 0.2s;
+}
+
+.cv-download-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.download-icon {
+    font-size: 0.9rem;
+}
+
+.call-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.status-icon {
+    font-size: 1.2rem;
+}
+
+.status-text {
+    color: var(--text-primary);
+}
+
+.call-content {
+    padding: var(--spacing-xl);
+}
+
+.transcript-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.transcript-icon {
+    font-size: 1.5rem;
+}
+
+.transcript-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.transcript-container {
+    margin-bottom: var(--spacing-lg);
+}
+
+.transcript-text {
+    width: 100%;
+    height: 150px;
+    resize: none;
+    padding: var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    background: var(--gray-50);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    overflow-y: auto;
+}
+
+.no-transcript {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-300);
+}
+
+.transcript-upload {
+    display: flex;
+    align-items: end;
+    gap: var(--spacing-lg);
+}
+
+.empty-extraction-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--gray-300);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-extraction-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.empty-extraction-message {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-extraction-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+/* Responsive Design for Other Elements */
+@media (max-width: 768px) {
+    .calls-wrapper {
+        padding: var(--spacing-lg);
+    }
+
+    .candidate-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .candidate-info {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+
+    .candidate-details {
+        align-items: center;
+    }
+
+    .transcript-text {
+        height: 120px;
+    }
+    
+    .transcript-upload {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .extracted-cv-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .calls-wrapper {
+        padding: var(--spacing-lg);
+    }
+
+    .candidate-header,
+    .call-content {
+        padding: var(--spacing-lg);
+    }
+
+    .upload-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

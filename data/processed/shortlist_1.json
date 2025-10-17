@@ -1,0 +1,37 @@
+[
+  {
+    "filename": "CV (Muhammad Ali Khokhar).pdf",
+    "name": "Muhammad Ali Khokhar",
+    "email": "mali.sm.khokhar@gmail.com",
+    "phone": "00922 321 7989537",
+    "reason": "Has experience in AI/ML and mentions Python as a skill"
+  },
+  {
+    "filename": "Ahsan_Resume.pdf",
+    "name": "Muhammad Ahsan Hanif",
+    "email": "ahsanhanif496@gmail.com",
+    "phone": "03114515165",
+    "reason": "Has experience in backend development, although not specifically with Python, and has a computer science background"
+  },
+  {
+    "filename": "MilaAllenResume.pdf",
+    "name": "Mila Allen",
+    "email": "mila@gmail.com",
+    "phone": "2014 - 2017",
+    "reason": "Has experience as a Python developer and mentions SQL and ETL expertise"
+  },
+  {
+    "filename": "TimothyDuncanResume.pdf",
+    "name": "TIMOTHY DUNCAN",
+    "email": "timothy@gmail.com",
+    "phone": "229-828-1284",
+    "reason": "Has 8 years of experience as a Python developer and is familiar with data processing and frameworks like Django and Flask"
+  },
+  {
+    "filename": "VioletRodriguezResume.pdf",
+    "name": "Violet Rodriguez",
+    "email": "violet@gmail.com",
+    "phone": "2018 - 2021",
+    "reason": "Has over 7 years of experience as a Python developer and is proficient in related frameworks"
+  }
+]
